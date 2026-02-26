@@ -33,39 +33,32 @@ const reviews = [
 ];
 
 const Review = () => {
-    // State to keep track of the current review index
-    const [index, setIndex] = useState(0);
-    const { id, name, job, image, text } = reviews[index]; // WHy we written index in reviews[index] because we want to access the current review based on the index state
+  const [index, setIndex] = useState(0); // Pehla review index 0 par hai
+  const { id, name, job, image, text } = reviews[index];
 
-    // Helper function to keep the index within bounds
-    const checkNumber = (number) => {
-        if(number > reviews.length - 1) return 0; // If number exceeds the last index, wrap around to the first index
-        if(number < 0) return reviews.length - 1; // If number is less than 0, wrap around to the last index
-        return number; // Otherwise, return the number as is
-    };
+  // Helper function: Index ko range mein rakhne ke liye
+  const checkNumber = (number) => {
+    if (number > reviews.length - 1) return 0; // End se aage gaye toh wapas start par
+    if (number < 0) return reviews.length - 1; // Start se piche gaye toh wapas end par
+    return number;
+  };
 
-    // Function to go to the next review
-    const nextPerson = () => {
-        setIndex((index) => {
-            return checkNumber(index + 1); // Increment the index and check if it's within bounds
-        });
-    };
+  const nextPerson = () => {
+    setIndex((index) => checkNumber(index + 1));
+  };
 
-    // Function to go to the previous review
-    const prevPerson = () => {
-        setIndex((index) => {
-            return checkNumber(index - 1); // Decrement the index and check if it's within bounds
-        })
+  const prevPerson = () => {
+    setIndex((index) => checkNumber(index - 1));
+  };
+
+  const randomPerson = () => {
+    let randomNumber = Math.floor(Math.random() * reviews.length);
+    // Agar random index existing index ke barabar aa gaya, toh +1 kardo taaki repeat na ho
+    if (randomNumber === index) {
+      randomNumber = index + 1;
     }
-
-    // Function to go to a random review
-    const randomPerson = () => {
-        let randomIndex = Math.floor(Math.random() * reviews.length); // Generate a random index
-        if(randomIndex === index) {
-            randomIndex = index + 1; // If the random index is the same as the current index, increment it
-        }
-        setIndex(checkNumber(randomIndex)); // Set the index to the random index and check if it's within bounds))
-    };
+    setIndex(checkNumber(randomNumber));
+  };
 
   return (
     <article className="review">
