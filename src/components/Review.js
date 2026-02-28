@@ -33,32 +33,43 @@ const reviews = [
 ];
 
 const Review = () => {
-  const [index, setIndex] = useState(0); // Pehla review index 0 par hai
-  const { id, name, job, image, text } = reviews[index];
+  // State to keep track of the current review index
+  const [index, setIndex] = useState(0);
+  // Destructure the current review data
+  const { name, job, image, text, id } = reviews[index];
 
-  // Helper function: Index ko range mein rakhne ke liye
+  // Helper function to keep the index within bounds
   const checkNumber = (number) => {
-    if (number > reviews.length - 1) return 0; // End se aage gaye toh wapas start par
-    if (number < 0) return reviews.length - 1; // Start se piche gaye toh wapas end par
+    if (number > reviews.length - 1) {
+      return 0;
+    }
+    if (number < 0) {
+      return reviews.length - 1; // Wrap around to the last review
+    }
     return number;
   };
 
+  // Function to go to the next review
   const nextPerson = () => {
     setIndex((index) => checkNumber(index + 1));
-  };
-
+  } 
+  // Function to go to the previous review
   const prevPerson = () => {
     setIndex((index) => checkNumber(index - 1));
+  }
+
+  // Function to go to a random review
+  const randomPerson = () => {
+    let randomIndex = Math.floor(Math.random() * reviews.length);
+
+    // Ensure we don't get the same review again
+    if(randomIndex === index) {
+      randomIndex = index + 1; // Ensure we get a different review
+    }
+    setIndex(checkNumber(randomIndex));
   };
 
-  const randomPerson = () => {
-    let randomNumber = Math.floor(Math.random() * reviews.length);
-    // Agar random index existing index ke barabar aa gaya, toh +1 kardo taaki repeat na ho
-    if (randomNumber === index) {
-      randomNumber = index + 1;
-    }
-    setIndex(checkNumber(randomNumber));
-  };
+
 
   return (
     <article className="review">
